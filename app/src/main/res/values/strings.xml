@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SportHub</string>
+    <string name="tagline">مركزك الرياضي الشامل</string>
+    <string name="welcome">مرحباً بك في SportHub</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_workouts">التمارين</string>
+    <string name="nav_store">المتجر</string>
+    <string name="nav_progress">التقدم</string>
+    <string name="nav_profile">الملف الشخصي</string>
+    
+    <!-- Auth -->
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="register">تسجيل حساب</string>
+    <string name="forgot_password">نسيت كلمة المرور؟</string>
+    
+    <!-- Store Categories -->
+    <string name="category_all">الكل</string>
+    <string name="category_protein">بروتين</string>
+    <string name="category_equipment">معدات</string>
+    <string name="category_clothes">ملابس</string>
+    <string name="category_vitamins">فيتامينات</string>
+    <string name="category_accessories">إكسسوارات</string>
+    
+    <!-- Common -->
+    <string name="add">إضافة</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
+</resources>
