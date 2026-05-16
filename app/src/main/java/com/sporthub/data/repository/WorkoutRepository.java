@@ -114,7 +114,14 @@ public class WorkoutRepository {
     }
     
     private String getWorkoutDocumentId(Workout workout) {
-        return workout.getUserId() + "_" + workout.getId();
+        String userId = workout.getUserId();
+        if (userId == null || userId.trim().isEmpty()) {
+            userId = getCurrentUserId();
+        }
+        if (userId == null || userId.trim().isEmpty()) {
+            userId = "unknown_user";
+        }
+        return userId + "_" + workout.getId();
     }
     
     private String getCurrentUserId() {
