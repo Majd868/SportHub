@@ -5,23 +5,26 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateUtils {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+    private static final String DATE_PATTERN = "dd/MM/yyyy";
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final String DATE_TIME_PATTERN = "dd/MM/yyyy HH:mm";
+
+    private DateUtils() {
+    }
     
     public static String formatDate(Date date) {
         if (date == null) return "";
-        return DATE_FORMAT.format(date);
+        return new SimpleDateFormat(DATE_PATTERN, Locale.getDefault()).format(date);
     }
     
     public static String formatTime(Date date) {
         if (date == null) return "";
-        return TIME_FORMAT.format(date);
+        return new SimpleDateFormat(TIME_PATTERN, Locale.getDefault()).format(date);
     }
     
     public static String formatDateTime(Date date) {
         if (date == null) return "";
-        return DATE_TIME_FORMAT.format(date);
+        return new SimpleDateFormat(DATE_TIME_PATTERN, Locale.getDefault()).format(date);
     }
     
     public static String getRelativeTime(Date date) {
