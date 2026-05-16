@@ -10,14 +10,15 @@ import com.sporthub.data.repository.ProductRepository;
 import java.util.List;
 
 public class StoreViewModel extends ViewModel {
-    private ProductRepository repository;
-    private LiveData<List<Product>> products;
-    private MutableLiveData<String> selectedCategory;
+    private final ProductRepository repository;
+    private final LiveData<List<Product>> products;
+    private final MutableLiveData<String> selectedCategory;
     
     public StoreViewModel() {
         repository = new ProductRepository();
+        products = repository.getProducts();
         selectedCategory = new MutableLiveData<>("all");
-        products = repository.getAllProducts();
+        repository.loadProducts("all");
     }
     
     public LiveData<List<Product>> getProducts() {
@@ -25,8 +26,9 @@ public class StoreViewModel extends ViewModel {
     }
     
     public void setCategory(String category) {
-        selectedCategory.setValue(category);
-        products = repository.getProductsByCategory(category);
+        String normalizedCategory = category == null ? "all" : category;
+        selectedCategory.setValue(normalizedCategory);
+        repository.loadProducts(normalizedCategory);
     }
     
     public LiveData<String> getSelectedCategory() {
