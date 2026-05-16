@@ -11,26 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepository {
-    private FirebaseFirestore firestore;
-    private MutableLiveData<List<Product>> productsLiveData;
+    private final FirebaseFirestore firestore;
+    private final MutableLiveData<List<Product>> productsLiveData;
     
     public ProductRepository() {
         firestore = FirebaseFirestore.getInstance();
-        productsLiveData = new MutableLiveData<>();
+        productsLiveData = new MutableLiveData<>(new ArrayList<>());
     }
     
-    public LiveData<List<Product>> getAllProducts() {
-        loadProducts(null);
+    public LiveData<List<Product>> getProducts() {
         return productsLiveData;
     }
     
-    public LiveData<List<Product>> getProductsByCategory(String category) {
-        loadProducts(category);
-        return productsLiveData;
-    }
-    
-    private void loadProducts(String category) {
-        if (category == null || category.equals("all")) {
+    public void loadProducts(String category) {
+        String normalizedCategory = category == null ? "all" : category;
+        
+        if ("all".equals(normalizedCategory)) {
             firestore.collection("products")
                     .whereEqualTo("available", true)
                     .get()
@@ -42,22 +38,25 @@ public class ProductRepository {
                             products.add(product);
                         }
                         productsLiveData.setValue(products);
-                    });
-        } else {
-            firestore.collection("products")
-                    .whereEqualTo("category", category)
-                    .whereEqualTo("available", true)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        List<Product> products = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Product product = document.toObject(Product.class);
-                            product.setProductId(document.getId());
-                            products.add(product);
-                        }
-                        productsLiveData.setValue(products);
-                    });
+                    })
+                    .addOnFailureListener(e -> productsLiveData.setValue(new ArrayList<>()));
+            return;
         }
+        
+        firestore.collection("products")
+                .whereEqualTo("category", normalizedCategory)
+                .whereEqualTo("available", true)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Product> products = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Product product = document.toObject(Product.class);
+                        product.setProductId(document.getId());
+                        products.add(product);
+                    }
+                    productsLiveData.setValue(products);
+                })
+                .addOnFailureListener(e -> productsLiveData.setValue(new ArrayList<>()));
     }
     
     public void getProductById(String productId, OnProductLoadedListener listener) {
@@ -65,13 +64,19 @@ public class ProductRepository {
                 .document(productId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Product product = documentSnapshot.toObject(Product.class);
-                        if (product != null) {
-                            product.setProductId(documentSnapshot.getId());
-                            listener.onProductLoaded(product);
-                        }
+                    if (!documentSnapshot.exists()) {
+                        listener.onError("المنتج غير موجود");
+                        return;
                     }
+                    
+                    Product product = documentSnapshot.toObject(Product.class);
+                    if (product == null) {
+                        listener.onError("تعذر تحميل بيانات المنتج");
+                        return;
+                    }
+                    
+                    product.setProductId(documentSnapshot.getId());
+                    listener.onProductLoaded(product);
                 })
                 .addOnFailureListener(e -> listener.onError(e.getMessage()));
     }
