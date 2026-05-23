@@ -66,7 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(this, "فشل تسجيل الدخول: " + task.getException().getMessage(), 
+                        String errorMsg = task.getException() != null
+                                ? task.getException().getMessage()
+                                : "خطأ غير معروف";
+                        Toast.makeText(this, "فشل تسجيل الدخول: " + errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
                 });

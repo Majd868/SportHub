@@ -1,31 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
-    
-    <LinearLayout
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_large"
-        android:gravity="center">
-        
-        <TextView
-            android:layout_width="wrap_content"
+        android:background="@color/surface"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_small">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_premium"
+                android:tint="@color/primary"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:text="SportHub Premium"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_heading"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Premium"
-            android:textColor="@color/primary"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="احصل على ميزات حصرية"
-            android:textColor="@color/text_secondary"
-            android:textSize="@dimen/text_size_title"
-            android:layout_marginTop="@dimen/spacing_small" />
-        
-    </LinearLayout>
-</ScrollView>
+            android:orientation="vertical">
+
+            <!-- Hero section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="@dimen/spacing_large"
+                android:background="@drawable/premium_hero_bg">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👑"
+                    android:textSize="56sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:text="SportHub Premium"
+                    android:textColor="@color/primary"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:text="ارتقِ بتجربتك الرياضية"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <!-- Features list -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ما الذي تحصل عليه؟"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_title"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_medium" />
+
+                <!-- Feature items -->
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat1"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat2"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat3"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat4"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat5"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat6"/>
+                <include layout="@layout/item_premium_feature"
+                    android:id="@+id/feat7"/>
+
+            </LinearLayout>
+
+            <!-- Pricing plans -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="اختر خطتك"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_title"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_medium" />
+
+                <!-- Monthly plan -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/plan_monthly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardBackgroundColor="@color/card_background"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
+                    app:strokeColor="#FF2E2E2E"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="@dimen/elevation_small">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_medium">
+
+                        <RadioButton
+                            android:id="@+id/radio_monthly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:buttonTint="@color/primary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_small"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="الخطة الشهرية"
+                                android:textColor="@color/text_primary"
+                                android:textSize="@dimen/text_size_body"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="بدون التزام، ألغِ في أي وقت"
+                                android:textColor="@color/text_hint"
+                                android:textSize="@dimen/text_size_small" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="end">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="29.99"
+                                android:textColor="@color/primary"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ريال / شهر"
+                                android:textColor="@color/text_hint"
+                                android:textSize="@dimen/text_size_small" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Annual plan (highlighted) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/plan_annual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    app:cardBackgroundColor="#1A00D9FF"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
+                    app:strokeColor="@color/primary"
+                    app:strokeWidth="2dp"
+                    app:cardElevation="@dimen/elevation_medium">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Best value badge -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🔥 الأفضل قيمةً — وفّر 44%"
+                            android:textColor="@color/background"
+                            android:textSize="@dimen/text_size_small"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:paddingVertical="6dp"
+                            android:background="@color/primary" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_medium">
+
+                            <RadioButton
+                                android:id="@+id/radio_annual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:buttonTint="@color/primary" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_small"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="الخطة السنوية"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="@dimen/text_size_body"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="يُعادل 16.67 ريال/شهر"
+                                    android:textColor="@color/text_hint"
+                                    android:textSize="@dimen/text_size_small" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="end">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="199.99"
+                                    android:textColor="@color/primary"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ريال / سنة"
+                                    android:textColor="@color/text_hint"
+                                    android:textSize="@dimen/text_size_small" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Subscribe button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/subscribe_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="👑 اشترك الآن"
+                    android:textColor="@color/background"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/primary"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    style="@style/Widget.SportHub.Button" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="يمكنك الإلغاء في أي وقت · لا توجد رسوم خفية"
+                    android:textColor="@color/text_hint"
+                    android:textSize="@dimen/text_size_small"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_large" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

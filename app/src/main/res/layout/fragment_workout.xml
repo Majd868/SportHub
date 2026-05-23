@@ -11,42 +11,99 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nav_workouts"
-            android:textSize="@dimen/text_size_large"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:padding="@dimen/spacing_medium" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_medium"
+            android:background="@color/surface">
 
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_nav_workout"
+                android:tint="@color/primary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:text="@string/nav_workouts"
+                android:textSize="@dimen/text_size_heading"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Primary accent line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary" />
+
+        <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/workouts_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="@dimen/spacing_small" />
+            android:paddingTop="@dimen/spacing_small"
+            android:paddingHorizontal="@dimen/spacing_small"
+            android:clipToPadding="false" />
 
-        <TextView
+        <!-- Empty State (centered vertically using layout_weight trick) -->
+        <LinearLayout
             android:id="@+id/empty_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="لا توجد تمارين مسجلة"
-            android:textColor="@color/text_secondary"
-            android:textSize="@dimen/text_size_title"
-            android:visibility="gone" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xl"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💪"
+                android:textSize="72sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:text="لا توجد تمارين مسجلة"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_heading"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="اضغط على + لإضافة تمرينك الأول"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body"
+                android:gravity="center" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_workout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/spacing_medium"
+        android:layout_margin="@dimen/spacing_large"
         android:contentDescription="@string/add"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/primary" />
+        app:srcCompat="@drawable/ic_add"
+        app:backgroundTint="@color/primary"
+        app:tint="@color/background" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

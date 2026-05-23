@@ -6,51 +6,57 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sporthub.R;
 import com.sporthub.data.model.SocialPost;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SocialAdapter extends ListAdapter<SocialPost, SocialAdapter.SocialViewHolder> {
 
-public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialViewHolder> {
-    private List<SocialPost> posts = new ArrayList<>();
-    
-    public void setPosts(List<SocialPost> posts) {
-        this.posts = posts;
-        notifyDataSetChanged();
+    public SocialAdapter() {
+        super(DIFF_CALLBACK);
     }
-    
+
+    private static final DiffUtil.ItemCallback<SocialPost> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<SocialPost>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull SocialPost oldItem, @NonNull SocialPost newItem) {
+                    return oldItem.getPostId() != null
+                            && oldItem.getPostId().equals(newItem.getPostId());
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull SocialPost oldItem, @NonNull SocialPost newItem) {
+                    return oldItem.getContent().equals(newItem.getContent());
+                }
+            };
+
     @NonNull
     @Override
     public SocialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_cart_item, parent, false);
+                .inflate(R.layout.item_workout, parent, false);
         return new SocialViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(@NonNull SocialViewHolder holder, int position) {
-        SocialPost post = posts.get(position);
+        SocialPost post = getItem(position);
         holder.bind(post);
     }
-    
-    @Override
-    public int getItemCount() {
-        return posts.size();
-    }
-    
+
     static class SocialViewHolder extends RecyclerView.ViewHolder {
-        private TextView productName;
-        
+        private final TextView postContent;
+
         public SocialViewHolder(@NonNull View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.product_name);
+            postContent = itemView.findViewById(R.id.exercise_name);
         }
-        
+
         public void bind(SocialPost post) {
-            productName.setText(post.getContent());
+            postContent.setText(post.getContent());
         }
     }
 }

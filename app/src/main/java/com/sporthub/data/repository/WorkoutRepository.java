@@ -73,9 +73,10 @@ public class WorkoutRepository {
         executorService.execute(() -> {
             workoutDao.delete(workout);
             if (workout.isSynced()) {
-                firestore.collection("workouts")
-                        .document(getWorkoutDocumentId(workout))
-                        .delete();
+                String docId = getWorkoutDocumentId(workout);
+                if (docId != null) {
+                    firestore.collection("workouts").document(docId).delete();
+                }
             }
         });
     }
@@ -85,13 +86,12 @@ public class WorkoutRepository {
     }
     
     private void syncToFirebase(Workout workout) {
-        String userId = getCurrentUserId();
-        if (userId == null || workout == null) {
-            return;
-        }
-        
+        if (workout == null) return;
+        String docId = getWorkoutDocumentId(workout);
+        if (docId == null) return;
+
         firestore.collection("workouts")
-                .document(getWorkoutDocumentId(workout))
+                .document(docId)
                 .set(workout)
                 .addOnSuccessListener(aVoid -> executorService.execute(() -> {
                     workout.setSynced(true);
@@ -119,7 +119,7 @@ public class WorkoutRepository {
             userId = getCurrentUserId();
         }
         if (userId == null || userId.trim().isEmpty()) {
-            userId = "unknown_user";
+            return null;
         }
         return userId + "_" + workout.getId();
     }

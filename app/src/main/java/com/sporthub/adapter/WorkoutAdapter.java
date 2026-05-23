@@ -6,23 +6,47 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sporthub.R;
 import com.sporthub.data.model.Workout;
 import com.sporthub.utils.DateUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+public class WorkoutAdapter extends ListAdapter<Workout, WorkoutAdapter.WorkoutViewHolder> {
 
-public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder> {
-    private List<Workout> workouts = new ArrayList<>();
-    
-    public void setWorkouts(List<Workout> workouts) {
-        this.workouts = workouts;
-        notifyDataSetChanged();
+    public interface OnWorkoutClickListener {
+        void onWorkoutClick(Workout workout);
+        void onWorkoutLongClick(Workout workout);
     }
-    
+
+    private OnWorkoutClickListener clickListener;
+
+    public WorkoutAdapter() {
+        super(DIFF_CALLBACK);
+    }
+
+    public void setOnWorkoutClickListener(OnWorkoutClickListener listener) {
+        this.clickListener = listener;
+    }
+
+    private static final DiffUtil.ItemCallback<Workout> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Workout>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Workout oldItem, @NonNull Workout newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull Workout oldItem, @NonNull Workout newItem) {
+                    return oldItem.getExerciseName().equals(newItem.getExerciseName())
+                            && oldItem.getSets() == newItem.getSets()
+                            && oldItem.getReps() == newItem.getReps()
+                            && oldItem.getCalories() == newItem.getCalories();
+                }
+            };
+
     @NonNull
     @Override
     public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,24 +54,19 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                 .inflate(R.layout.item_workout, parent, false);
         return new WorkoutViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position) {
-        Workout workout = workouts.get(position);
-        holder.bind(workout);
+        Workout workout = getItem(position);
+        holder.bind(workout, clickListener);
     }
-    
-    @Override
-    public int getItemCount() {
-        return workouts.size();
-    }
-    
+
     static class WorkoutViewHolder extends RecyclerView.ViewHolder {
-        private TextView exerciseName;
-        private TextView workoutDetails;
-        private TextView workoutDate;
-        private TextView workoutCalories;
-        
+        private final TextView exerciseName;
+        private final TextView workoutDetails;
+        private final TextView workoutDate;
+        private final TextView workoutCalories;
+
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
             exerciseName = itemView.findViewById(R.id.exercise_name);
@@ -55,13 +74,21 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
             workoutDate = itemView.findViewById(R.id.workout_date);
             workoutCalories = itemView.findViewById(R.id.workout_calories);
         }
-        
-        public void bind(Workout workout) {
+
+        public void bind(Workout workout, OnWorkoutClickListener listener) {
             exerciseName.setText(workout.getExerciseName());
-            workoutDetails.setText(String.format("%d مجموعات × %d تكرارات", 
+            workoutDetails.setText(String.format("%d مجموعات × %d تكرارات",
                     workout.getSets(), workout.getReps()));
             workoutDate.setText(DateUtils.getRelativeTime(workout.getDate()));
             workoutCalories.setText(String.format("%d سعرة", workout.getCalories()));
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null) listener.onWorkoutClick(workout);
+            });
+            itemView.setOnLongClickListener(v -> {
+                if (listener != null) listener.onWorkoutLongClick(workout);
+                return true;
+            });
         }
     }
 }

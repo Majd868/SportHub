@@ -10,6 +10,7 @@
     <!-- Text Sizes -->
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_body">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_heading">20sp</dimen>
     <dimen name="text_size_large">24sp</dimen>

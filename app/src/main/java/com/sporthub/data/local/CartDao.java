@@ -24,6 +24,9 @@ public interface CartDao {
     
     @Query("SELECT * FROM cart_items WHERE userId = :userId")
     LiveData<List<CartItem>> getCartItems(String userId);
+
+    @Query("SELECT * FROM cart_items WHERE userId = :userId")
+    List<CartItem> getCartItemsSync(String userId);
     
     @Query("SELECT * FROM cart_items WHERE userId = :userId AND productId = :productId")
     CartItem getCartItemByProductId(String userId, String productId);

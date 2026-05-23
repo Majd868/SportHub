@@ -16,48 +16,50 @@ import com.sporthub.databinding.FragmentProfileBinding;
 import com.sporthub.ui.auth.LoginActivity;
 import com.sporthub.ui.orders.MyOrdersActivity;
 import com.sporthub.ui.premium.PremiumActivity;
+import com.sporthub.ui.seller.SellerDashboardActivity;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private FirebaseAuth auth;
-    
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, 
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-    
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         auth = FirebaseAuth.getInstance();
-        
-        // Load user data
+
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
-            binding.userName.setText(user.getDisplayName() != null ? user.getDisplayName() : "مستخدم");
-            binding.userEmail.setText(user.getEmail());
+            String name = user.getDisplayName();
+            binding.userName.setText((name != null && !name.isEmpty()) ? name : "مستخدم");
+            binding.userEmail.setText(user.getEmail() != null ? user.getEmail() : "");
         }
-        
-        // Menu click listeners
-        binding.menuOrders.setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), MyOrdersActivity.class));
-        });
-        
-        binding.menuPremium.setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), PremiumActivity.class));
-        });
-        
+
+        binding.menuOrders.setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), MyOrdersActivity.class)));
+
+        binding.menuSeller.setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), SellerDashboardActivity.class)));
+
+        binding.menuPremium.setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), PremiumActivity.class)));
+
         binding.menuLogout.setOnClickListener(v -> {
             auth.signOut();
-            startActivity(new Intent(requireContext(), LoginActivity.class));
-            requireActivity().finish();
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
     }
-    
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

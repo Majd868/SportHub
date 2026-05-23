@@ -40,16 +40,33 @@ public class WorkoutFragment extends Fragment {
         
         // Set up RecyclerView
         adapter = new WorkoutAdapter();
+        adapter.setOnWorkoutClickListener(new WorkoutAdapter.OnWorkoutClickListener() {
+            @Override
+            public void onWorkoutClick(com.sporthub.data.model.Workout workout) {
+                // يمكن فتح تفاصيل التمرين لاحقاً
+            }
+
+            @Override
+            public void onWorkoutLongClick(com.sporthub.data.model.Workout workout) {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("حذف التمرين")
+                        .setMessage("هل تريد حذف تمرين \"" + workout.getExerciseName() + "\"؟")
+                        .setPositiveButton("حذف", (dialog, which) -> viewModel.delete(workout))
+                        .setNegativeButton("إلغاء", null)
+                        .show();
+            }
+        });
         binding.workoutsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.workoutsRecyclerView.setAdapter(adapter);
-        
+
         // Observe workouts
         viewModel.getAllWorkouts().observe(getViewLifecycleOwner(), workouts -> {
             if (workouts != null && !workouts.isEmpty()) {
-                adapter.setWorkouts(workouts);
+                adapter.submitList(workouts);
                 binding.emptyView.setVisibility(View.GONE);
                 binding.workoutsRecyclerView.setVisibility(View.VISIBLE);
             } else {
+                adapter.submitList(null);
                 binding.emptyView.setVisibility(View.VISIBLE);
                 binding.workoutsRecyclerView.setVisibility(View.GONE);
             }
@@ -64,40 +81,83 @@ public class WorkoutFragment extends Fragment {
     
     private void showAddWorkoutDialog() {
         Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
+
         View dialogView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_add_workout, null);
         dialog.setContentView(dialogView);
-        
+
+        // Wider dialog
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.92f),
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
         TextInputEditText exerciseName = dialogView.findViewById(R.id.exercise_name_input);
-        TextInputEditText sets = dialogView.findViewById(R.id.sets_input);
-        TextInputEditText reps = dialogView.findViewById(R.id.reps_input);
-        
+        TextInputEditText sets         = dialogView.findViewById(R.id.sets_input);
+        TextInputEditText reps         = dialogView.findViewById(R.id.reps_input);
+        TextInputEditText weight       = dialogView.findViewById(R.id.weight_input);
+        TextInputEditText notes        = dialogView.findViewById(R.id.notes_input);
+
         dialogView.findViewById(R.id.save_button).setOnClickListener(v -> {
-            String name = exerciseName.getText().toString().trim();
-            String setsStr = sets.getText().toString().trim();
-            String repsStr = reps.getText().toString().trim();
-            
-            if (name.isEmpty() || setsStr.isEmpty() || repsStr.isEmpty()) {
-                Toast.makeText(requireContext(), "يرجى ملء جميع الحقول", Toast.LENGTH_SHORT).show();
+            CharSequence nameCs   = exerciseName.getText();
+            CharSequence setsCs   = sets.getText();
+            CharSequence repsCs   = reps.getText();
+            CharSequence weightCs = weight.getText();
+            CharSequence notesCs  = notes.getText();
+
+            String name      = nameCs   != null ? nameCs.toString().trim()   : "";
+            String setsStr   = setsCs   != null ? setsCs.toString().trim()   : "";
+            String repsStr   = repsCs   != null ? repsCs.toString().trim()   : "";
+            String weightStr = weightCs != null ? weightCs.toString().trim() : "";
+            String notesStr  = notesCs  != null ? notesCs.toString().trim()  : "";
+
+            if (name.isEmpty()) {
+                exerciseName.setError("أدخل اسم التمرين");
+                exerciseName.requestFocus();
                 return;
             }
-            
-            Workout workout = new Workout(
-                    name, 
-                    "عام",
-                    Integer.parseInt(setsStr),
-                    Integer.parseInt(repsStr),
-                    0
-            );
-            workout.setCalories(100); // Calculate based on exercise
-            
+            if (setsStr.isEmpty() || repsStr.isEmpty()) {
+                Toast.makeText(requireContext(), "يرجى ملء المجموعات والتكرارات", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int setsCount, repsCount;
+            double weightVal = 0;
+            try {
+                setsCount = Integer.parseInt(setsStr);
+                repsCount = Integer.parseInt(repsStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(requireContext(), "يرجى إدخال أرقام صحيحة للمجموعات والتكرارات", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!weightStr.isEmpty()) {
+                try {
+                    weightVal = Double.parseDouble(weightStr);
+                } catch (NumberFormatException ignored) { /* نتجاهل إذا كانت قيمة غير صالحة */ }
+            }
+
+            if (setsCount <= 0 || repsCount <= 0) {
+                Toast.makeText(requireContext(), "يجب أن تكون المجموعات والتكرارات أكبر من صفر", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Workout workout = new Workout(name, "عام", setsCount, repsCount, weightVal);
+            workout.setCalories(setsCount * repsCount * 5);
+            if (!notesStr.isEmpty()) {
+                workout.setNotes(notesStr);
+            }
+
             viewModel.insert(workout);
             dialog.dismiss();
-            Toast.makeText(requireContext(), "تم إضافة التمرين", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "✓ تم إضافة التمرين بنجاح", Toast.LENGTH_SHORT).show();
         });
-        
+
         dialogView.findViewById(R.id.cancel_button).setOnClickListener(v -> dialog.dismiss());
-        
+
         dialog.show();
     }
     

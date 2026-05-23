@@ -74,16 +74,19 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = auth.getCurrentUser();
                         if (firebaseUser != null) {
-                            // Create user in Firestore
                             User user = new User(firebaseUser.getUid(), email, name);
-                            userRepository.createUser(user);
-                            
+                            userRepository.createUser(user, null,
+                                    err -> Toast.makeText(this, "تحذير: فشل حفظ بيانات الملف الشخصي", Toast.LENGTH_SHORT).show()
+                            );
                             Toast.makeText(this, "تم إنشاء الحساب بنجاح", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(this, MainActivity.class));
                             finish();
                         }
                     } else {
-                        Toast.makeText(this, "فشل إنشاء الحساب: " + task.getException().getMessage(), 
+                        String errorMsg = task.getException() != null
+                                ? task.getException().getMessage()
+                                : "خطأ غير معروف";
+                        Toast.makeText(this, "فشل إنشاء الحساب: " + errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
