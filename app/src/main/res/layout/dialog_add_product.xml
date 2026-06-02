@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/surface">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_large"
+        android:background="#FF222222">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_seller"
+            android:tint="@color/primary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="إضافة منتج جديد"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_heading"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/primary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_medium">
+
+        <!-- اسم المنتج -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="🏷️ اسم المنتج" android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body" android:layout_marginBottom="@dimen/spacing_xs"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/primary"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/product_name_input"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="مثال: بروتين واي، دمبل 20kg..."
+                android:textColor="@color/text_primary" android:textColorHint="@color/text_hint"
+                android:inputType="textCapWords"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- الوصف -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="📝 الوصف" android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body"
+            android:layout_marginTop="@dimen/spacing_small" android:layout_marginBottom="@dimen/spacing_xs"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/primary"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/product_desc_input"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="وصف المنتج، مكوناته، مميزاته..."
+                android:textColor="@color/text_primary" android:textColorHint="@color/text_hint"
+                android:inputType="textMultiLine" android:minLines="2"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- التصنيف -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="📂 التصنيف" android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body"
+            android:layout_marginTop="@dimen/spacing_small" android:layout_marginBottom="@dimen/spacing_xs"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/category_layout"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/primary"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/category_dropdown"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:hint="اختر التصنيف"
+                android:textColor="@color/text_primary" android:textColorHint="@color/text_hint"
+                android:inputType="none"
+                android:focusable="false" android:focusableInTouchMode="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- السعر والمخزون -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_small">
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical"
+                android:layout_marginEnd="@dimen/spacing_small">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="💰 السعر (ريال)" android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body" android:layout_marginBottom="@dimen/spacing_xs"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/primary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_price_input"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:hint="0.00" android:inputType="numberDecimal"
+                        android:textColor="@color/text_primary" android:textColorHint="@color/text_hint"
+                        android:gravity="center"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical"
+                android:layout_marginStart="@dimen/spacing_small">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="📦 الكمية المتاحة" android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body" android:layout_marginBottom="@dimen/spacing_xs"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/primary"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_stock_input"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:hint="10" android:inputType="number"
+                        android:textColor="@color/text_primary" android:textColorHint="@color/text_hint"
+                        android:gravity="center"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_large">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:text="إلغاء" android:textColor="@color/text_secondary"
+                style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/publish_button"
+                android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                android:text="✓ نشر المنتج" android:textColor="@color/background"
+                android:backgroundTint="@color/primary"
+                style="@style/Widget.SportHub.Button"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

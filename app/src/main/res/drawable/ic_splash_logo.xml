@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+  <!-- دائرة الخلفية -->
+  <path
+      android:fillColor="#1A1A1A"
+      android:pathData="M60,60m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0"/>
+
+  <!-- الدمبل -->
+  <path
+      android:fillColor="#00D9FF"
+      android:pathData="M22,53 Q18,53 18,57 L18,63 Q18,67 22,67 L28,67 L28,53 Z"/>
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M28,56 L92,56 L92,64 L28,64 Z"/>
+  <path
+      android:fillColor="#00D9FF"
+      android:pathData="M98,53 Q102,53 102,57 L102,63 Q102,67 98,67 L92,67 L92,53 Z"/>
+
+  <!-- حلقتان للدمبل -->
+  <path
+      android:fillColor="#66E3FF"
+      android:pathData="M22,50 Q16,50 16,57 L16,63 Q16,70 22,70 L30,70 L30,50 Z"/>
+  <path
+      android:fillColor="#66E3FF"
+      android:pathData="M98,50 Q104,50 104,57 L104,63 Q104,70 98,70 L90,70 L90,50 Z"/>
+
+  <!-- نجمة -->
+  <path
+      android:fillColor="#00D9FF"
+      android:pathData="M60,28 L63,37 L72,37 L65,43 L68,52 L60,46 L52,52 L55,43 L48,37 L57,37 Z"/>
+
+</vector>
