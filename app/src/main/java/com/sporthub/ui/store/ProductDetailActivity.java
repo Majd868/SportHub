@@ -67,7 +67,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(productImage)
                     .placeholder(com.sporthub.R.drawable.ic_image_placeholder)
+                    .error(com.sporthub.R.drawable.ic_image_placeholder)
                     .centerCrop()
+                    .transition(com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade(400))
                     .into(binding.productImage);
         }
 

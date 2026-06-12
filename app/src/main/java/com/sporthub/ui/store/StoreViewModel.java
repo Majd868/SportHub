@@ -23,8 +23,13 @@ public class StoreViewModel extends ViewModel {
 
         // أضف المنتجات التجريبية إن كانت Firestore فارغة ثم حمّل
         repository.seedDemoProductsIfEmpty(() -> {
-            repository.loadProducts("all");
-            isLoading.postValue(false);
+            // حدّث صور المنتجات الموجودة (تُصلح المنتجات المُبذورة بدون صور)
+            repository.addImagesToExistingProducts();
+            // تأخير 800ms لإعطاء Firestore وقتاً لحفظ الصور قبل التحميل
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                repository.loadProducts("all");
+                isLoading.postValue(false);
+            }, 800);
         });
     }
 

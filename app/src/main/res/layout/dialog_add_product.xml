@@ -45,6 +45,82 @@
         android:orientation="vertical"
         android:padding="@dimen/spacing_medium">
 
+        <!-- منطقة اختيار الصورة -->
+        <FrameLayout
+            android:id="@+id/image_picker_area"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="@drawable/bg_image_picker"
+            android:clickable="true"
+            android:focusable="true">
+
+            <!-- placeholder: أيقونة + نص -->
+            <LinearLayout
+                android:id="@+id/image_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📷"
+                    android:textSize="36sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="اضغط لاختيار صورة"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="اختياري"
+                    android:textColor="@color/text_hint"
+                    android:textSize="@dimen/text_size_small" />
+
+            </LinearLayout>
+
+            <!-- معاينة الصورة المختارة -->
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <!-- زر تغيير الصورة (يظهر بعد الاختيار) -->
+            <TextView
+                android:id="@+id/change_image_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/spacing_small"
+                android:text="  تغيير  "
+                android:textColor="@color/background"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                android:background="@drawable/bg_category_badge"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <!-- شريط التحميل -->
+        <ProgressBar
+            android:id="@+id/upload_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primary"
+            android:visibility="gone" />
+
         <!-- اسم المنتج -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="🏷️ اسم المنتج" android:textColor="@color/text_secondary"

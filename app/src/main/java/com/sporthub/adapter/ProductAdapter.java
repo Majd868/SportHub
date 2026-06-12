@@ -97,15 +97,20 @@ public class ProductAdapter extends ListAdapter<Product, ProductAdapter.ProductV
             // Category badge
             categoryBadge.setText(getCategoryLabel(product.getCategory()));
 
-            // Image
+            // Image — تحميل من الإنترنت مع تأثير fade-in أنيق
             if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
                 Glide.with(itemView.getContext())
                         .load(product.getImageUrl())
                         .placeholder(R.drawable.ic_image_placeholder)
+                        .error(R.drawable.ic_image_placeholder)
                         .centerCrop()
+                        .transition(com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade(300))
                         .into(productImage);
             } else {
-                productImage.setImageResource(R.drawable.ic_image_placeholder);
+                Glide.with(itemView.getContext())
+                        .load(R.drawable.ic_image_placeholder)
+                        .centerCrop()
+                        .into(productImage);
             }
 
             // Click → detail page
